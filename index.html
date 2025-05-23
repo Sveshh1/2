@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Домашнє завдання 2</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-msdf-text-component/dist/aframe-msdf-text-component.min.js"></script>
+    <style>
+      /* Загрузка */
+      #loader {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        z-index: 9999;
+      }
+      #scene {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Загрузка -->
+    <div id="loader">Підготувала: Анастасія Свєшнікова</div>
+
+    <!-- A-Frame сцена -->
+    <a-scene id="scene">
+      <a-assets>
+        <a-asset-item id="font-json" src="assets/font.json"></a-asset-item>
+        <img id="font-png" src="assets/font.png" crossorigin="anonymous">
+        <a-asset-item id="model" src="assets/model.glb" response-type="arraybuffer"></a-asset-item>
+        <img id="sky" src="assets/sky.jpg" crossorigin="anonymous">
+      </a-assets>
+
+      <!-- Небо -->
+      <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+
+      <!-- Підлога -->
+      <a-plane src="assets/grass.jpg" rotation="-90 0 0" width="30" height="30" repeat="10 10"></a-plane>
+
+      <!-- Центрований напис зверху -->
+      <a-entity 
+        msdf-text="font: #font-json; atlas: #font-png; text: Анастасія"
+        position="0 4 -4"
+        scale="1 1 1"
+        material="color: white"
+        align="center">
+      </a-entity>
+
+      <!-- Примітиви -->
+      <a-entity position="0 0 -5">
+        <a-sphere position="-3 1 0" radius="1"
+                  animation="property: material.color; from: #C71585; to: #ff0000; dur: 3000; loop: true">
+        </a-sphere>
+        <a-box position="0 1 0" depth="1" height="1" width="1" color="#D2691E"
+               animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+        </a-box>
+        <a-cylinder position="3 1 0" radius="0.7" height="1.5" color="#00BFFF"
+                    animation="property: scale; from: 1 1 1; to: 1.5 1.5 1.5; dir: alternate; dur: 4000; loop: true" >
+        </a-cylinder>
+      </a-entity>
+
+      <!-- 3D-модель пчілки -->
+      <a-entity 
+        gltf-model="#model"
+        position="3 2 -1"
+        scale="0.5 0.5 0.5"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
+        animation__fly="property: position; from: 3 2 -1; to: -3 2 -1; dir: alternate; dur: 4000; loop: true">
+      </a-entity>
+
+      <a-camera position="0 1.6 5"></a-camera>
+    </a-scene>
+
+    <script>
+      // Через 3 секунди скрываем загрузчик и показываем сцену
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.getElementById('loader').style.display = 'none';
+          document.getElementById('scene').style.display = 'block';
+        }, 3000);
+      });
+    </script>
+
+  </body>
+</html>
